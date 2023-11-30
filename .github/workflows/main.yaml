@@ -27,4 +27,5 @@ jobs:
         with:
           commit: ${{ github.sha }}
           tag: ${{ needs.build.outputs.node-version }}
-          artifacts: ${{ steps.download.outputs.download-path }}/*
+          artifacts: ${{ steps.download.outputs.download-path }}/**
+          allowUpdates: true

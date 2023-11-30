@@ -28,7 +28,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: node-${{ needs.node-version.outputs.version }}-win-${{ matrix.arch }}
-          path: C:\\node\\node.exe
+          path: C:\\node\\**
 
   unsign-darwin:
     needs: [node-version]
@@ -43,7 +43,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: node-${{ needs.node-version.outputs.version }}-darwin-${{ matrix.arch }}
-          path: node
+          path: dist/**
 
   unsign-linux:
     needs: [node-version]
@@ -58,5 +58,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: node-${{ needs.node-version.outputs.version }}-linux-${{ matrix.arch }}
-          path: node
+          path: dist/**
 
