@@ -12,12 +12,16 @@ url="https://nodejs.org/dist/${nodeVersion}/${fileName}.tar.gz"
 wget -q "$url"
 tar -xzf "${fileName}.tar.gz"
 
-nodeBin='node'
-cp "${fileName}/bin/node" "$nodeBin"
+distDir="dist"
+mkdir -p "$distDir"
+
+nodeBinName="$fileName"
+nodeBinPath="${distDir}/${nodeBinName}"
+cp "${fileName}/bin/node" "$nodeBinPath"
 
 if [[ "$platform" == "darwin" ]]; then
   echo "Removing signature with codesign"
-  codesign --remove-signature "$nodeBin"
+  codesign --remove-signature "$nodeBinPath"
 fi
 
 echo "Done"
