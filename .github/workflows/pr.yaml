@@ -3,6 +3,7 @@ on:
     branches:
       - main
     paths-ignore:
+      - LICENSE
       - README.md
       - .github/FUNDING.yml
 
