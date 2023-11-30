@@ -1,0 +1,62 @@
+on:
+  workflow_call:
+    outputs:
+      node-version:
+        value: ${{ jobs.node-version.outputs.version }}
+
+jobs:
+  node-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: version
+        run:
+          echo "version=$(cat .node-version)" >> "$GITHUB_OUTPUT"
+
+  unsign-win:
+    needs: [node-version]
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: scripts/gen-unsigned-node.ps1 ${{ needs.node-version.outputs.version }} ${{ matrix.arch }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: node-${{ needs.node-version.outputs.version }}-win-${{ matrix.arch }}
+          path: C:\\node\\node.exe
+
+  unsign-darwin:
+    needs: [node-version]
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/gen-unsigned-node.sh darwin ${{ needs.node-version.outputs.version }} ${{ matrix.arch }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: node-${{ needs.node-version.outputs.version }}-darwin-${{ matrix.arch }}
+          path: node
+
+  unsign-linux:
+    needs: [node-version]
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        arch: [x64, arm64, armv7l]
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/gen-unsigned-node.sh linux ${{ needs.node-version.outputs.version }} ${{ matrix.arch }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: node-${{ needs.node-version.outputs.version }}-linux-${{ matrix.arch }}
+          path: node
+
