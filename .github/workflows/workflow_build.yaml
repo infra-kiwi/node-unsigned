@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: scripts/gen-unsigned-node.ps1 ${{ needs.node-version.outputs.version }} ${{ matrix.arch }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: node-${{ needs.node-version.outputs.version }}-win-${{ matrix.arch }}
           path: C:\\node\\**
@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash scripts/gen-unsigned-node.sh darwin ${{ needs.node-version.outputs.version }} ${{ matrix.arch }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: node-${{ needs.node-version.outputs.version }}-darwin-${{ matrix.arch }}
           path: dist/**
@@ -55,7 +55,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash scripts/gen-unsigned-node.sh linux ${{ needs.node-version.outputs.version }} ${{ matrix.arch }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: node-${{ needs.node-version.outputs.version }}-linux-${{ matrix.arch }}
           path: dist/**
